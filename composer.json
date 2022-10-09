@@ -37,7 +37,7 @@
         "phpstan/phpstan-mockery": "^1.1",
         "phpstan/phpstan-phpunit": "^1.1",
         "phpunit/phpunit": "^9.5",
-        "robmorgan/phinx": "^0.12.13",
+        "robmorgan/phinx": "^0.12.13 || ^0.13.0",
         "scrutinizer/ocular": "^1.9"
     },
     "autoload": {
