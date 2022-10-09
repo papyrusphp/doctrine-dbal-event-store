@@ -14,6 +14,11 @@ Install via composer:
 $ composer install papyrus/doctrine-dbal-event-store
 ```
 
+In order to use `doctrine-dbal-event-store`, you need to install implementations of
+[papyrus/domain-event-registry](https://github.com/papyrusphp/domain-event-registry) and [papyrus/serializer](https://github.com/papyrusphp/serializer) as well.
+
+See these two libraries for installation instructions.
+
 ## Configuration
 Bind this implementation to the interface `EventStore` in your service definitions, e.g.:
 
@@ -36,7 +41,9 @@ return [
         return new DoctrineDbalEventStore(
             $container->get(Connection::class),
             TableSchemaFactory::create(/* use you custom field names */),
+            // See papyrus/domain-event-registry for more details
             $container->get(DomainEventRegistry::class),
+            // See papyrus/serializer for more details
             $container->get(Serializer::class),
         ); 
     },
@@ -45,8 +52,18 @@ return [
 A Symfony YAML-file definition:
 ```yaml
 services:
-    Papyrus\EventStore\EventStore\EventStore:
-        class: Papyrus\DoctrineDbalEventStore\DoctrineDbalEventStore
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  # Other definitions
+  # ...
+
+  Papyrus\EventStore\EventStore\EventStore:
+    class: Papyrus\DoctrineDbalEventStore\DoctrineDbalEventStore
+    
+  Papyrus\DoctrineDbalEventStore\TableSchema:
+    factory: [Papyrus\DoctrineDbalEventStore\TableSchemaFactory, 'create']
 ```
 
 ### Database schema
