@@ -1,4 +1,11 @@
 # 📜 Papyrus Event Store: Doctrine DBAL implementation
+[![Build Status](https://scrutinizer-ci.com/g/papyrusphp/doctrine-dbal-event-store/badges/build.png?b=main)](https://github.com/papyrusphp/doctrine-dbal-event-store/actions)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/papyrusphp/doctrine-dbal-event-store.svg?style=flat)](https://scrutinizer-ci.com/g/papyrusphp/doctrine-dbal-event-store/code-structure)
+[![Quality Score](https://img.shields.io/scrutinizer/g/papyrusphp/doctrine-dbal-event-store.svg?style=flat)](https://scrutinizer-ci.com/g/papyrusphp/doctrine-dbal-event-store)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
+[![Packagist Version](https://img.shields.io/packagist/v/papyrus/doctrine-dbal-event-store.svg?style=flat&include_prereleases)](https://packagist.org/packages/papyrus/doctrine-dbal-event-store)
+[![PHP Version](https://img.shields.io/badge/php-%5E8.1-8892BF.svg?style=flat)](http://www.php.net)
+
 Implementation of [papyrus/event-store](https://github.com/papyrusphp/event-store), based on [doctrine/dbal](https://github.com/doctrine/dbal).
 
 ### Installation
