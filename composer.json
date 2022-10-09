@@ -1,66 +1,63 @@
 {
-  "name": "papyrus/doctrine-dbal-event-store",
-  "description": "Implementation of papyrus/event-store, based on doctrine/dbal",
-  "license": "MIT",
-  "type": "library",
-  "keywords": [
-    "doctrine",
-    "dbal",
-    "event-store",
-    "event-sourcing",
-    "ddd",
-    "domain-driven-design",
-    "cqrs",
-    "papyrus"
-  ],
-  "authors": [
-    {
-      "name": "Jeroen de Graaf",
-      "email": "hello@jero.work"
-    }
-  ],
-  "require": {
-    "php": "^8.1",
-    "doctrine/dbal": "^3.4",
-    "papyrus/domain-event-registry": "^0.1",
-    "papyrus/event-sourcing": "^0.1",
-    "papyrus/event-store": "^0.1",
-    "papyrus/serializer": "^0.1"
-  },
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.11",
-    "maglnet/composer-require-checker": "^4.2",
-    "mockery/mockery": "^1.5",
-    "phpro/grumphp-shim": "^1.13",
-    "phpstan/extension-installer": "^1.1",
-    "phpstan/phpstan": "^1.8",
-    "phpstan/phpstan-mockery": "^1.1",
-    "phpstan/phpstan-phpunit": "^1.1",
-    "phpunit/phpunit": "^9.5",
-    "robmorgan/phinx": "^0.12.13"
-  },
-  "provide": {
-    "papyrus/event-store": "0.1.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Papyrus\\DoctrineDbalEventStore\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Papyrus\\DoctrineDbalEventStore\\Test\\": "tests/"
-    }
-  },
-  "config": {
-    "allow-plugins": {
-      "phpro/grumphp-shim": true,
-      "phpstan/extension-installer": true
+    "name": "papyrus/doctrine-dbal-event-store",
+    "description": "Implementation of papyrus/event-store, based on doctrine/dbal",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "doctrine",
+        "dbal",
+        "event-store",
+        "event-sourcing",
+        "ddd",
+        "domain-driven-design",
+        "cqrs",
+        "papyrus"
+    ],
+    "authors": [
+        {
+            "name": "Jeroen de Graaf",
+            "email": "hello@jero.work"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "doctrine/dbal": "^3.4",
+        "papyrus/domain-event-registry": "^0.1",
+        "papyrus/event-sourcing": "^0.1",
+        "papyrus/event-store": "^0.1",
+        "papyrus/serializer": "^0.1"
     },
-    "sort-packages": true
-  },
-  "scripts": {
-    "phpcsfixer": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes",
-    "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon"
-  }
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.11",
+        "maglnet/composer-require-checker": "^4.2",
+        "mockery/mockery": "^1.5",
+        "phpro/grumphp-shim": "^1.13",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan-mockery": "^1.1",
+        "phpstan/phpstan-phpunit": "^1.1",
+        "phpunit/phpunit": "^9.5",
+        "robmorgan/phinx": "^0.12.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "Papyrus\\DoctrineDbalEventStore\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Papyrus\\DoctrineDbalEventStore\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "phpro/grumphp-shim": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "phpcsfixer": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes",
+        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon"
+    }
 }
