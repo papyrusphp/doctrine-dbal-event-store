@@ -3629,16 +3629,16 @@
         },
         {
             "name": "robmorgan/phinx",
-            "version": "0.13.0",
+            "version": "0.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/phinx.git",
-                "reference": "c4d7f0506ed71a32f3131f57e4bb49fb9f5aad6c"
+                "reference": "eccde746d7afa08f0df880f68dcbc475d001de7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/phinx/zipball/c4d7f0506ed71a32f3131f57e4bb49fb9f5aad6c",
-                "reference": "c4d7f0506ed71a32f3131f57e4bb49fb9f5aad6c",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/eccde746d7afa08f0df880f68dcbc475d001de7f",
+                "reference": "eccde746d7afa08f0df880f68dcbc475d001de7f",
                 "shasum": ""
             },
             "require": {
@@ -3709,9 +3709,9 @@
             ],
             "support": {
                 "issues": "https://github.com/cakephp/phinx/issues",
-                "source": "https://github.com/cakephp/phinx/tree/0.13.0"
+                "source": "https://github.com/cakephp/phinx/tree/0.13.1"
             },
-            "time": "2022-10-03T05:04:01+00:00"
+            "time": "2022-10-09T23:43:15+00:00"
         },
         {
             "name": "scrutinizer/ocular",
