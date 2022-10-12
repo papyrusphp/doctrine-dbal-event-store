@@ -40,6 +40,9 @@
         "robmorgan/phinx": "^0.12.13 || ^0.13.0",
         "scrutinizer/ocular": "^1.9"
     },
+    "provide": {
+        "papyrus/event-store-implementation": "0.1"
+    },
     "autoload": {
         "psr-4": {
             "Papyrus\\DoctrineDbalEventStore\\": "src/"
