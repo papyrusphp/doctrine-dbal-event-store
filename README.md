@@ -11,7 +11,7 @@ Implementation of [papyrus/event-store](https://github.com/papyrusphp/event-stor
 ### Installation
 Install via composer:
 ```bash
-$ composer install papyrus/doctrine-dbal-event-store
+composer require papyrus/doctrine-dbal-event-store
 ```
 
 In order to use `doctrine-dbal-event-store`, you need to install implementations of
