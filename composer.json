@@ -22,10 +22,10 @@
     "require": {
         "php": "^8.1",
         "doctrine/dbal": "^3.4",
-        "papyrus/domain-event-registry": "^0.1",
-        "papyrus/event-sourcing": "^0.1",
-        "papyrus/event-store": "^0.1",
-        "papyrus/serializer": "^0.1"
+        "papyrus/domain-event-registry": "^0.2",
+        "papyrus/event-sourcing": "^0.2",
+        "papyrus/event-store": "^0.2",
+        "papyrus/serializer": "^0.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.11",
@@ -41,7 +41,7 @@
         "scrutinizer/ocular": "^1.9"
     },
     "provide": {
-        "papyrus/event-store-implementation": "0.1"
+        "papyrus/event-store-implementation": "0.2"
     },
     "autoload": {
         "psr-4": {

@@ -16,6 +16,7 @@ use Papyrus\DoctrineDbalEventStore\TableSchemaFactory;
 use Papyrus\DoctrineDbalEventStore\Test\Stub\TestAggregateRootId;
 use Papyrus\DoctrineDbalEventStore\Test\Stub\TestAnotherDomainEvent;
 use Papyrus\DoctrineDbalEventStore\Test\Stub\TestDomainEvent;
+use Papyrus\DomainEventRegistry\DomainEventNameResolver\NamedDomainEvent\NamedDomainEventNameResolver;
 use Papyrus\DomainEventRegistry\InMemory\InMemoryDomainEventRegistry;
 use Papyrus\EventSourcing\DomainEvent;
 use Papyrus\EventStore\EventStore\AggregateRootNotFoundException;
@@ -45,11 +46,15 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
         $this->eventStore = new DoctrineDbalEventStore(
             $this->connection = Mockery::mock(Connection::class),
             TableSchemaFactory::create(),
-            new InMemoryDomainEventRegistry([
-                TestDomainEvent::class,
-                TestAnotherDomainEvent::class,
-            ]),
+            new InMemoryDomainEventRegistry(
+                $domainEventResolver = new NamedDomainEventNameResolver(),
+                [
+                    TestDomainEvent::class,
+                    TestAnotherDomainEvent::class,
+                ],
+            ),
             $serializer,
+            $domainEventResolver,
         );
 
         parent::setUp();

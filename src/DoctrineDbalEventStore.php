@@ -7,6 +7,7 @@ namespace Papyrus\DoctrineDbalEventStore;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Generator;
+use Papyrus\DomainEventRegistry\DomainEventNameResolver\DomainEventNameResolver;
 use Papyrus\DomainEventRegistry\DomainEventRegistry;
 use Papyrus\EventSourcing\AggregateRootId;
 use Papyrus\EventSourcing\DomainEvent;
@@ -28,6 +29,7 @@ final class DoctrineDbalEventStore implements EventStore
         private readonly TableSchema $tableSchema,
         private readonly DomainEventRegistry $domainEventRegistry,
         private readonly Serializer $serializer,
+        private readonly DomainEventNameResolver $domainEventNameResolver,
     ) {
     }
 
@@ -106,7 +108,7 @@ final class DoctrineDbalEventStore implements EventStore
                     ->setParameters([
                         'id' => $envelope->eventId,
                         'aggregateRootId' => $envelope->event->getAggregateRootId(),
-                        'eventName' => $envelope->event->getEventName(),
+                        'eventName' => $this->domainEventNameResolver->resolve($envelope->event),
                         'payload' => json_encode($this->serializer->serialize($envelope->event), JSON_THROW_ON_ERROR),
                         'playhead' => $envelope->playhead,
                         'metadata' => json_encode($envelope->metadata, JSON_THROW_ON_ERROR),
