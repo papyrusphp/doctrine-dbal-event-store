@@ -9,8 +9,6 @@ use Doctrine\DBAL\Connection;
 use Generator;
 use Papyrus\DomainEventRegistry\DomainEventNameResolver\DomainEventNameResolver;
 use Papyrus\DomainEventRegistry\DomainEventRegistry;
-use Papyrus\EventSourcing\AggregateRootId;
-use Papyrus\EventSourcing\DomainEvent;
 use Papyrus\EventStore\EventStore\AggregateRootNotFoundException;
 use Papyrus\EventStore\EventStore\DomainEventEnvelope;
 use Papyrus\EventStore\EventStore\EventStore;
@@ -19,10 +17,17 @@ use Papyrus\EventStore\EventStore\Metadata;
 use Papyrus\Serializer\Serializer;
 use Throwable;
 
+/**
+ * @template DomainEvent of object
+ *
+ * @implements EventStore<DomainEvent>
+ */
 final class DoctrineDbalEventStore implements EventStore
 {
     /**
+     * @param DomainEventRegistry<DomainEvent> $domainEventRegistry
      * @param Serializer<DomainEvent> $serializer
+     * @param DomainEventNameResolver<DomainEvent> $domainEventNameResolver
      */
     public function __construct(
         private readonly Connection $connection,
@@ -33,7 +38,7 @@ final class DoctrineDbalEventStore implements EventStore
     ) {
     }
 
-    public function load(AggregateRootId $aggregateRootId, int $playhead = 0): Generator
+    public function load(string $aggregateRootId, int $playhead = 0): Generator
     {
         try {
             $results = $this->connection->createQueryBuilder()
@@ -74,11 +79,14 @@ final class DoctrineDbalEventStore implements EventStore
                 /** @var string $payload */
                 $payload = $result[$this->tableSchema->payloadFieldName];
 
+                /** @var class-string<DomainEvent> $domainEventClassName */
+                $domainEventClassName = $this->domainEventRegistry->retrieve($eventName);
+
                 yield new DomainEventEnvelope(
                     $eventId,
                     $this->serializer->deserialize(
                         json_decode($payload, true, flags: JSON_THROW_ON_ERROR),
-                        $this->domainEventRegistry->retrieve($eventName),
+                        $domainEventClassName,
                     ),
                     $playhead,
                     new DateTimeImmutable($appliedAt),
@@ -90,12 +98,12 @@ final class DoctrineDbalEventStore implements EventStore
         }
     }
 
-    public function append(AggregateRootId $aggregateRootId, DomainEventEnvelope ...$messages): void
+    public function append(string $aggregateRootId, array $envelopes): void
     {
         try {
             $this->connection->beginTransaction();
 
-            foreach ($messages as $envelope) {
+            foreach ($envelopes as $envelope) {
                 $this->connection->createQueryBuilder()
                     ->insert($this->tableSchema->tableName)
                     ->setValue($this->tableSchema->eventIdFieldName, ':id')
@@ -107,7 +115,7 @@ final class DoctrineDbalEventStore implements EventStore
                     ->setValue($this->tableSchema->appliedAtFieldName, ':appliedAt')
                     ->setParameters([
                         'id' => $envelope->eventId,
-                        'aggregateRootId' => $envelope->event->getAggregateRootId(),
+                        'aggregateRootId' => $aggregateRootId,
                         'eventName' => $this->domainEventNameResolver->resolve($envelope->event),
                         'payload' => json_encode($this->serializer->serialize($envelope->event), JSON_THROW_ON_ERROR),
                         'playhead' => $envelope->playhead,

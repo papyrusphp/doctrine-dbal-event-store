@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Papyrus\DoctrineDbalEventStore\Test\Stub;
 
-use Papyrus\EventSourcing\AggregateRootId;
-
-final class TestAggregateRootId implements AggregateRootId
+final class TestAggregateRootId
 {
     public function __toString(): string
     {

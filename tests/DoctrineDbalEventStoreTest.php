@@ -16,14 +16,12 @@ use Papyrus\DoctrineDbalEventStore\TableSchemaFactory;
 use Papyrus\DoctrineDbalEventStore\Test\Stub\TestAggregateRootId;
 use Papyrus\DoctrineDbalEventStore\Test\Stub\TestAnotherDomainEvent;
 use Papyrus\DoctrineDbalEventStore\Test\Stub\TestDomainEvent;
-use Papyrus\DomainEventRegistry\DomainEventNameResolver\NamedDomainEvent\NamedDomainEventNameResolver;
+use Papyrus\DomainEventRegistry\DomainEventNameResolver\DomainEventNameResolver;
 use Papyrus\DomainEventRegistry\InMemory\InMemoryDomainEventRegistry;
-use Papyrus\EventSourcing\DomainEvent;
 use Papyrus\EventStore\EventStore\AggregateRootNotFoundException;
 use Papyrus\EventStore\EventStore\DomainEventEnvelope;
 use Papyrus\EventStore\EventStore\EventStoreFailedException;
 use Papyrus\EventStore\EventStore\Metadata;
-use Papyrus\Serializer\SerializableDomainEvent\SerializableDomainEventSerializer;
 use Papyrus\Serializer\Serializer;
 
 /**
@@ -36,25 +34,48 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
      */
     private MockInterface $connection;
 
+    /**
+     * @var MockInterface&DomainEventNameResolver<object>
+     */
+    private MockInterface $domainEventResolver;
+
+    /**
+     * @var MockInterface&Serializer<object>
+     */
+    private MockInterface $serializer;
+
+    /**
+     * @var DoctrineDbalEventStore<object>
+     */
     private DoctrineDbalEventStore $eventStore;
 
     protected function setUp(): void
     {
-        /** @var Serializer<DomainEvent> $serializer */
-        $serializer = new SerializableDomainEventSerializer();
+        $this->serializer = Mockery::mock(Serializer::class);
+        $this->domainEventResolver = Mockery::mock(DomainEventNameResolver::class);
+
+        $this->domainEventResolver->allows('resolve')
+            ->with(TestDomainEvent::class)
+            ->andReturn('test.domain_event')
+        ;
+
+        $this->domainEventResolver->allows('resolve')
+            ->with(TestAnotherDomainEvent::class)
+            ->andReturn('test.another_domain_event')
+        ;
 
         $this->eventStore = new DoctrineDbalEventStore(
             $this->connection = Mockery::mock(Connection::class),
             TableSchemaFactory::create(),
             new InMemoryDomainEventRegistry(
-                $domainEventResolver = new NamedDomainEventNameResolver(),
+                $this->domainEventResolver,
                 [
                     TestDomainEvent::class,
                     TestAnotherDomainEvent::class,
                 ],
             ),
-            $serializer,
-            $domainEventResolver,
+            $this->serializer,
+            $this->domainEventResolver,
         );
 
         parent::setUp();
@@ -72,7 +93,7 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
 
         self::expectException(EventStoreFailedException::class);
 
-        iterator_to_array($this->eventStore->load(new TestAggregateRootId(), 10));
+        iterator_to_array($this->eventStore->load((string) new TestAggregateRootId(), 10));
     }
 
     /**
@@ -87,7 +108,7 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
 
         self::expectException(AggregateRootNotFoundException::class);
 
-        iterator_to_array($this->eventStore->load(new TestAggregateRootId(), 10));
+        iterator_to_array($this->eventStore->load((string) new TestAggregateRootId(), 10));
     }
 
     /**
@@ -119,11 +140,21 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
             ])
         ;
 
-        $envelopes = iterator_to_array($this->eventStore->load(new TestAggregateRootId(), 10));
+        $this->serializer->expects('deserialize')
+            ->with(['aggregateRootId' => '2af4804f-89cc-4c0d-b0f2-408d22897303'], TestDomainEvent::class)
+            ->andReturn(new TestDomainEvent('2af4804f-89cc-4c0d-b0f2-408d22897303'))
+        ;
+
+        $this->serializer->expects('deserialize')
+            ->with(['aggregateRootId' => 'f7bac034-870b-4ed9-827e-452e7e2ef630'], TestAnotherDomainEvent::class)
+            ->andReturn(new TestAnotherDomainEvent('f7bac034-870b-4ed9-827e-452e7e2ef630'))
+        ;
+
+        $envelopes = iterator_to_array($this->eventStore->load((string) new TestAggregateRootId(), 10));
 
         self::assertCount(2, $envelopes);
 
-        /** @var DomainEventEnvelope $envelope1 */
+        /** @var DomainEventEnvelope<TestDomainEvent> $envelope1 */
         $envelope1 = $envelopes[0];
         self::assertSame(['some' => true, 'metadata' => 2.4], $envelope1->metadata->jsonSerialize());
         self::assertSame(1, $envelope1->playhead);
@@ -133,7 +164,7 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
         self::assertInstanceOf(TestDomainEvent::class, $event1);
         self::assertSame('2af4804f-89cc-4c0d-b0f2-408d22897303', $event1->aggregateRootId);
 
-        /** @var DomainEventEnvelope $envelope1 */
+        /** @var DomainEventEnvelope<TestAnotherDomainEvent> $envelope1 */
         $envelope2 = $envelopes[1];
         self::assertSame(['some' => false, 'metadata' => 'test'], $envelope2->metadata->jsonSerialize());
         self::assertSame(2, $envelope2->playhead);
@@ -149,12 +180,14 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
      */
     public function itShouldAppend(): void
     {
+        $aggregateRootId = (string) new TestAggregateRootId();
+
         $this->connection->expects('beginTransaction');
         $this->connection
             ->expects('createQueryBuilder->insert->setValue->setValue->setValue->setValue->setValue->setValue->setValue->setParameters')
             ->with([
                 'id' => 'c09b1ae2-f560-4305-82aa-3402d9ce5fae',
-                'aggregateRootId' => '8b0888ca-22ee-4970-ad50-564d2fcdcf2c',
+                'aggregateRootId' => $aggregateRootId,
                 'eventName' => 'test.domain_event',
                 'payload' => '{"aggregateRootId":"8b0888ca-22ee-4970-ad50-564d2fcdcf2c"}',
                 'playhead' => 1,
@@ -168,7 +201,7 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
             ->expects('createQueryBuilder->insert->setValue->setValue->setValue->setValue->setValue->setValue->setValue->setParameters')
             ->with([
                 'id' => 'd4e03a74-0380-4c77-a756-95e89a7598d3',
-                'aggregateRootId' => '51ff60a5-cdb8-4983-96e4-36241befc12a',
+                'aggregateRootId' => $aggregateRootId,
                 'eventName' => 'test.another_domain_event',
                 'payload' => '{"aggregateRootId":"51ff60a5-cdb8-4983-96e4-36241befc12a"}',
                 'playhead' => 2,
@@ -181,22 +214,42 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
         $this->connection->expects('commit');
         $this->connection->expects('rollBack')->never();
 
+        $testDomainEvent = new TestDomainEvent('8b0888ca-22ee-4970-ad50-564d2fcdcf2c');
+        $this->serializer->expects('serialize')
+            ->with($testDomainEvent)
+            ->andReturn(['aggregateRootId' => $testDomainEvent->aggregateRootId])
+        ;
+
+        $testAnotherDomainEvent = new TestAnotherDomainEvent('51ff60a5-cdb8-4983-96e4-36241befc12a');
+        $this->serializer->expects('serialize')
+            ->with($testAnotherDomainEvent)
+            ->andReturn(['aggregateRootId' => $testAnotherDomainEvent->aggregateRootId])
+        ;
+
+        /** @var DomainEventEnvelope<object> $envelope1 */
+        $envelope1 = new DomainEventEnvelope(
+            'c09b1ae2-f560-4305-82aa-3402d9ce5fae',
+            $testDomainEvent,
+            1,
+            new DateTimeImmutable('2022-10-07 20:22:13.456326'),
+            (new Metadata())->withMetadata('key', 'value'),
+        );
+
+        /** @var DomainEventEnvelope<object> $envelope2 */
+        $envelope2 = new DomainEventEnvelope(
+            'd4e03a74-0380-4c77-a756-95e89a7598d3',
+            $testAnotherDomainEvent,
+            2,
+            new DateTimeImmutable('2022-10-07 20:23:45.673328'),
+            (new Metadata())->withMetadata('key', 'non-value'),
+        );
+
         $this->eventStore->append(
-            new TestAggregateRootId(),
-            new DomainEventEnvelope(
-                'c09b1ae2-f560-4305-82aa-3402d9ce5fae',
-                new TestDomainEvent('8b0888ca-22ee-4970-ad50-564d2fcdcf2c'),
-                1,
-                new DateTimeImmutable('2022-10-07 20:22:13.456326'),
-                (new Metadata())->withMetadata('key', 'value'),
-            ),
-            new DomainEventEnvelope(
-                'd4e03a74-0380-4c77-a756-95e89a7598d3',
-                new TestAnotherDomainEvent('51ff60a5-cdb8-4983-96e4-36241befc12a'),
-                2,
-                new DateTimeImmutable('2022-10-07 20:23:45.673328'),
-                (new Metadata())->withMetadata('key', 'non-value'),
-            ),
+            $aggregateRootId,
+            [
+                $envelope1,
+                $envelope2,
+            ],
         );
     }
 
@@ -213,22 +266,30 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
 
         self::expectException(EventStoreFailedException::class);
 
+        /** @var DomainEventEnvelope<object> $envelope1 */
+        $envelope1 = new DomainEventEnvelope(
+            'c09b1ae2-f560-4305-82aa-3402d9ce5fae',
+            new TestDomainEvent('8b0888ca-22ee-4970-ad50-564d2fcdcf2c'),
+            1,
+            new DateTimeImmutable('2022-10-07 20:22:13.456326'),
+            (new Metadata())->withMetadata('key', 'value'),
+        );
+
+        /** @var DomainEventEnvelope<object> $envelope2 */
+        $envelope2 = new DomainEventEnvelope(
+            'd4e03a74-0380-4c77-a756-95e89a7598d3',
+            new TestAnotherDomainEvent('51ff60a5-cdb8-4983-96e4-36241befc12a'),
+            2,
+            new DateTimeImmutable('2022-10-07 20:23:45.673328'),
+            (new Metadata())->withMetadata('key', 'non-value'),
+        );
+
         $this->eventStore->append(
-            new TestAggregateRootId(),
-            new DomainEventEnvelope(
-                'c09b1ae2-f560-4305-82aa-3402d9ce5fae',
-                new TestDomainEvent('8b0888ca-22ee-4970-ad50-564d2fcdcf2c'),
-                1,
-                new DateTimeImmutable('2022-10-07 20:22:13.456326'),
-                (new Metadata())->withMetadata('key', 'value'),
-            ),
-            new DomainEventEnvelope(
-                'd4e03a74-0380-4c77-a756-95e89a7598d3',
-                new TestAnotherDomainEvent('51ff60a5-cdb8-4983-96e4-36241befc12a'),
-                2,
-                new DateTimeImmutable('2022-10-07 20:23:45.673328'),
-                (new Metadata())->withMetadata('key', 'non-value'),
-            ),
+            (string) new TestAggregateRootId(),
+            [
+                $envelope1,
+                $envelope2,
+            ],
         );
     }
 }
