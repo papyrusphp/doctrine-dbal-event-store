@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Papyrus\DoctrineDbalEventStore\Test\Stub;
 
-use Papyrus\DomainEventRegistry\DomainEventNameResolver\NamedDomainEvent;
-use Papyrus\EventSourcing\DomainEvent;
-use Papyrus\Serializer\SerializableDomainEvent\SerializableDomainEvent;
-
-final class TestDomainEvent implements DomainEvent, NamedDomainEvent, SerializableDomainEvent
+final class TestDomainEvent
 {
     public function __construct(
         public readonly string $aggregateRootId,
@@ -38,7 +34,7 @@ final class TestDomainEvent implements DomainEvent, NamedDomainEvent, Serializab
     /**
      * @param array{aggregateRootId: string} $payload
      */
-    public static function deserialize(mixed $payload): SerializableDomainEvent
+    public static function deserialize(mixed $payload): self
     {
         return new self($payload['aggregateRootId']);
     }
