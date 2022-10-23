@@ -40,7 +40,7 @@
         "scrutinizer/ocular": "^1.9"
     },
     "provide": {
-        "papyrus/event-store-implementation": "0.2"
+        "papyrus/event-store-implementation": "0.3"
     },
     "autoload": {
         "psr-4": {
