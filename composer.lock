@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad75a453f72c7706cc0070fa2a9ce03e",
+    "content-hash": "e9dd4638f0b170f02cd68b19d6fe644c",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -495,16 +495,16 @@
         },
         {
             "name": "papyrus/domain-event-registry",
-            "version": "0.3.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/papyrusphp/domain-event-registry.git",
-                "reference": "3ecb91d1fca1ecc8ad399abebefd7361d6f702b1"
+                "reference": "a53fb6d500454a6223f01f60d1ac0073341c16fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/papyrusphp/domain-event-registry/zipball/3ecb91d1fca1ecc8ad399abebefd7361d6f702b1",
-                "reference": "3ecb91d1fca1ecc8ad399abebefd7361d6f702b1",
+                "url": "https://api.github.com/repos/papyrusphp/domain-event-registry/zipball/a53fb6d500454a6223f01f60d1ac0073341c16fb",
+                "reference": "a53fb6d500454a6223f01f60d1ac0073341c16fb",
                 "shasum": ""
             },
             "require": {
@@ -551,9 +551,9 @@
             ],
             "support": {
                 "issues": "https://github.com/papyrusphp/domain-event-registry/issues",
-                "source": "https://github.com/papyrusphp/domain-event-registry/tree/0.3.0"
+                "source": "https://github.com/papyrusphp/domain-event-registry/tree/0.4.0"
             },
-            "time": "2022-10-21T18:56:31+00:00"
+            "time": "2022-10-23T06:59:09+00:00"
         },
         {
             "name": "papyrus/event-store",

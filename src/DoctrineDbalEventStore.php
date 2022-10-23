@@ -116,7 +116,7 @@ final class DoctrineDbalEventStore implements EventStore
                     ->setParameters([
                         'id' => $envelope->eventId,
                         'aggregateRootId' => $aggregateRootId,
-                        'eventName' => $this->domainEventNameResolver->resolve($envelope->event),
+                        'eventName' => $this->domainEventNameResolver->resolve($envelope->event::class),
                         'payload' => json_encode($this->serializer->serialize($envelope->event), JSON_THROW_ON_ERROR),
                         'playhead' => $envelope->playhead,
                         'metadata' => json_encode($envelope->metadata, JSON_THROW_ON_ERROR),
