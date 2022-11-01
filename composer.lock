@@ -667,16 +667,16 @@
         },
         {
             "name": "papyrus/serializer",
-            "version": "0.3.0",
+            "version": "0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/papyrusphp/serializer.git",
-                "reference": "065100683249848286731d3f565efccde8a900b7"
+                "reference": "6ad4d662ddc20b8ef1c967075a0695333f12f1be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/papyrusphp/serializer/zipball/065100683249848286731d3f565efccde8a900b7",
-                "reference": "065100683249848286731d3f565efccde8a900b7",
+                "url": "https://api.github.com/repos/papyrusphp/serializer/zipball/6ad4d662ddc20b8ef1c967075a0695333f12f1be",
+                "reference": "6ad4d662ddc20b8ef1c967075a0695333f12f1be",
                 "shasum": ""
             },
             "require": {
@@ -688,6 +688,9 @@
                 "phpstan/phpstan": "^1.8",
                 "phpunit/phpunit": "^9.5",
                 "scrutinizer/ocular": "^1.9"
+            },
+            "suggest": {
+                "papyrus/symfony-serializer": "Serializer implementation based on symfony/serializer"
             },
             "type": "library",
             "autoload": {
@@ -717,9 +720,9 @@
             ],
             "support": {
                 "issues": "https://github.com/papyrusphp/serializer/issues",
-                "source": "https://github.com/papyrusphp/serializer/tree/0.3.0"
+                "source": "https://github.com/papyrusphp/serializer/tree/0.3.1"
             },
-            "time": "2022-10-21T18:11:13+00:00"
+            "time": "2022-11-01T19:14:00+00:00"
         },
         {
             "name": "psr/cache",
