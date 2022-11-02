@@ -494,16 +494,16 @@
         },
         {
             "name": "papyrus/domain-event-registry",
-            "version": "0.4.0",
+            "version": "0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/papyrusphp/domain-event-registry.git",
-                "reference": "a53fb6d500454a6223f01f60d1ac0073341c16fb"
+                "reference": "1578d83705732166adbabb758f5bf16f06ce3ee3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/papyrusphp/domain-event-registry/zipball/a53fb6d500454a6223f01f60d1ac0073341c16fb",
-                "reference": "a53fb6d500454a6223f01f60d1ac0073341c16fb",
+                "url": "https://api.github.com/repos/papyrusphp/domain-event-registry/zipball/1578d83705732166adbabb758f5bf16f06ce3ee3",
+                "reference": "1578d83705732166adbabb758f5bf16f06ce3ee3",
                 "shasum": ""
             },
             "require": {
@@ -521,6 +521,9 @@
                 "phpstan/phpstan-phpunit": "^1.1",
                 "phpunit/phpunit": "^9.5",
                 "scrutinizer/ocular": "^1.9"
+            },
+            "suggest": {
+                "papyrus/class-reflection-domain-event-registry": "Domain event registry implementation based on class reflection"
             },
             "type": "library",
             "autoload": {
@@ -550,9 +553,9 @@
             ],
             "support": {
                 "issues": "https://github.com/papyrusphp/domain-event-registry/issues",
-                "source": "https://github.com/papyrusphp/domain-event-registry/tree/0.4.0"
+                "source": "https://github.com/papyrusphp/domain-event-registry/tree/0.4.1"
             },
-            "time": "2022-10-23T06:59:09+00:00"
+            "time": "2022-11-02T17:39:15+00:00"
         },
         {
             "name": "papyrus/event-store",
