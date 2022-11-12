@@ -23,6 +23,7 @@ use Papyrus\EventStore\EventStore\DomainEventEnvelope;
 use Papyrus\EventStore\EventStore\EventStoreFailedException;
 use Papyrus\EventStore\EventStore\Metadata;
 use Papyrus\Serializer\Serializer;
+use DateTimeInterface;
 
 /**
  * @internal
@@ -158,7 +159,7 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
         $envelope1 = $envelopes[0];
         self::assertSame(['some' => true, 'metadata' => 2.4], $envelope1->metadata->jsonSerialize());
         self::assertSame(1, $envelope1->playhead);
-        self::assertSame('2022-10-07T19:29:35.543+00:00', $envelope1->appliedAt->format(\DateTimeInterface::RFC3339_EXTENDED));
+        self::assertSame('2022-10-07T19:29:35.543+00:00', $envelope1->appliedAt->format(DateTimeInterface::RFC3339_EXTENDED));
         self::assertSame('147828da-d896-4cda-9e4a-f21c0f691a32', $envelope1->eventId);
         $event1 = $envelope1->event;
         self::assertInstanceOf(TestDomainEvent::class, $event1);
@@ -168,7 +169,7 @@ class DoctrineDbalEventStoreTest extends MockeryTestCase
         $envelope2 = $envelopes[1];
         self::assertSame(['some' => false, 'metadata' => 'test'], $envelope2->metadata->jsonSerialize());
         self::assertSame(2, $envelope2->playhead);
-        self::assertSame('2022-10-07T19:30:40.758+00:00', $envelope2->appliedAt->format(\DateTimeInterface::RFC3339_EXTENDED));
+        self::assertSame('2022-10-07T19:30:40.758+00:00', $envelope2->appliedAt->format(DateTimeInterface::RFC3339_EXTENDED));
         self::assertSame('12e74a64-bc40-427d-bc74-0a9dbdb05826', $envelope2->eventId);
         $event2 = $envelope2->event;
         self::assertInstanceOf(TestAnotherDomainEvent::class, $event2);
