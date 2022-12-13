@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9dd4638f0b170f02cd68b19d6fe644c",
+    "content-hash": "803096d3784bd2237664e88a54956fdc",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -437,20 +437,24 @@
         },
         {
             "name": "papyrus/clock",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/papyrusphp/clock.git",
-                "reference": "68f4e583e8eb625c38b77490cc494c8b9c5c45e3"
+                "reference": "77f1c7b8559b28660807c8b2db88f47c1c6e4e47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/papyrusphp/clock/zipball/68f4e583e8eb625c38b77490cc494c8b9c5c45e3",
-                "reference": "68f4e583e8eb625c38b77490cc494c8b9c5c45e3",
+                "url": "https://api.github.com/repos/papyrusphp/clock/zipball/77f1c7b8559b28660807c8b2db88f47c1c6e4e47",
+                "reference": "77f1c7b8559b28660807c8b2db88f47c1c6e4e47",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.1"
+                "php": "^8.1",
+                "psr/clock": "^1.0"
+            },
+            "provide": {
+                "psr/clock-implementation": "1.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.11",
@@ -488,9 +492,9 @@
             ],
             "support": {
                 "issues": "https://github.com/papyrusphp/clock/issues",
-                "source": "https://github.com/papyrusphp/clock/tree/0.1.0"
+                "source": "https://github.com/papyrusphp/clock/tree/0.2.0"
             },
-            "time": "2022-10-08T14:34:16+00:00"
+            "time": "2022-12-13T07:31:14+00:00"
         },
         {
             "name": "papyrus/domain-event-registry",
@@ -559,22 +563,23 @@
         },
         {
             "name": "papyrus/event-store",
-            "version": "0.3.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/papyrusphp/event-store.git",
-                "reference": "4f760e036dcb8b5488978a34a0144b744c4925b1"
+                "reference": "1871ee34d0a12e4b146a8e4531841dc53e9284d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/papyrusphp/event-store/zipball/4f760e036dcb8b5488978a34a0144b744c4925b1",
-                "reference": "4f760e036dcb8b5488978a34a0144b744c4925b1",
+                "url": "https://api.github.com/repos/papyrusphp/event-store/zipball/1871ee34d0a12e4b146a8e4531841dc53e9284d3",
+                "reference": "1871ee34d0a12e4b146a8e4531841dc53e9284d3",
                 "shasum": ""
             },
             "require": {
-                "papyrus/clock": "^0.1",
+                "papyrus/clock": "^0.2",
                 "papyrus/identity-generator": "^0.1",
-                "php": "^8.1"
+                "php": "^8.1",
+                "psr/clock": "^1.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.11",
@@ -587,6 +592,9 @@
                 "phpstan/phpstan-phpunit": "^1.1",
                 "phpunit/phpunit": "^9.5",
                 "scrutinizer/ocular": "^1.9"
+            },
+            "suggest": {
+                "papyrus/doctrine-dbal-event-store": "Event store implementation based on doctrine/dbal"
             },
             "type": "library",
             "autoload": {
@@ -615,9 +623,9 @@
             ],
             "support": {
                 "issues": "https://github.com/papyrusphp/event-store/issues",
-                "source": "https://github.com/papyrusphp/event-store/tree/0.3.0"
+                "source": "https://github.com/papyrusphp/event-store/tree/0.4.0"
             },
-            "time": "2022-10-21T19:29:27+00:00"
+            "time": "2022-12-13T07:53:11+00:00"
         },
         {
             "name": "papyrus/identity-generator",
@@ -775,6 +783,54 @@
                 "source": "https://github.com/php-fig/cache/tree/3.0.0"
             },
             "time": "2021-02-03T23:26:27+00:00"
+        },
+        {
+            "name": "psr/clock",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/clock.git",
+                "reference": "e41a24703d4560fd0acb709162f73b8adfc3aa0d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/clock/zipball/e41a24703d4560fd0acb709162f73b8adfc3aa0d",
+                "reference": "e41a24703d4560fd0acb709162f73b8adfc3aa0d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Clock\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for reading the clock.",
+            "homepage": "https://github.com/php-fig/clock",
+            "keywords": [
+                "clock",
+                "now",
+                "psr",
+                "psr-20",
+                "time"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/clock/issues",
+                "source": "https://github.com/php-fig/clock/tree/1.0.0"
+            },
+            "time": "2022-11-25T14:36:26+00:00"
         },
         {
             "name": "psr/log",

@@ -23,7 +23,7 @@
         "php": "^8.1",
         "doctrine/dbal": "^3.4",
         "papyrus/domain-event-registry": "^0.4",
-        "papyrus/event-store": "^0.3",
+        "papyrus/event-store": "^0.4",
         "papyrus/serializer": "^0.3"
     },
     "require-dev": {
